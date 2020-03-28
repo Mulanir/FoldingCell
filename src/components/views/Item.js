@@ -5,9 +5,9 @@ class Item extends Component {
   render() {
     return (
       <Card padding-16 margin-8>
-        <Text>Hello1!</Text>
-        <Text>Hello2!</Text>
-        <Text>Hello3!</Text>
+        <Text>{this.props.key1}</Text>
+        <Text>{this.props.key2}</Text>
+        <Text>{this.props.key3}</Text>
       </Card>
     );
   }

@@ -3,18 +3,11 @@ import { View, ScrollBar } from "react-native-ui-lib";
 
 import "src/styles/theme";
 import "src/styles/constants";
-import Item from "src/components/views/Item";
+import List from "src/components/containers/List";
 
 class App extends Component {
   render() {
-    return (
-      <ScrollBar padding-8 >
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-      </ScrollBar>
-    );
+    return <List />;
   }
 }
 

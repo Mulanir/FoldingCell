@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollBar } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 
 import Item from "src/components/views/Item";
 
@@ -29,7 +29,11 @@ class List extends Component {
   render() {
     let items = this.getItems();
 
-    return <ScrollBar padding-8>{items}</ScrollBar>;
+    return (
+      <View padding-8>
+        {items}
+      </View>
+    );
   }
 }
 

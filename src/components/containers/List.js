@@ -14,7 +14,7 @@ class List extends Component {
   render() {
     let items = this.getItems();
     
-    return <View padding-8>{items}</View>;
+    return <View bg-green10 padding-8>{items}</View>;
   }
 }
 

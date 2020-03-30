@@ -5,7 +5,7 @@ ThemeManager.setComponentTheme("Text", (props, context) => {
   if (props.part1) {
     return {
       style: {
-        fontSize: 14 * PixelRatio.getFontScale(),
+        fontSize: 22 * PixelRatio.getFontScale(),
       },
     };
   } else if (props.part2) {
@@ -17,7 +17,7 @@ ThemeManager.setComponentTheme("Text", (props, context) => {
   } else if (props.part3) {
     return {
       style: {
-        fontSize: 22 * PixelRatio.getFontScale(),
+        fontSize: 14 * PixelRatio.getFontScale(),
       },
     };
   }

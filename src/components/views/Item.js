@@ -86,7 +86,7 @@ class Item extends PureComponent {
       Animated.timing(this.state.heightValue, {
         toValue: this.HEIGHT_MAIN,
         duration: this.DURATION * 2,
-        easing: Easing.in(Easing.circle),
+        easing: Easing.in(Easing.cubic),
         useNativeDriver: false,
       }),
     ]).start(callback);
@@ -96,12 +96,14 @@ class Item extends PureComponent {
     return (
       <AnimatedCard
         onPress={this.animate}
-        margin-8
+        marginH-16
+        marginV-8
         activeOpacity={1}
         borderRadius={0}
         enableShadow={false}
         style={{
           height: this.state.heightValue,
+          ...styles.card,
         }}>
         <AnimatedView height={this.HEIGHT_MAIN} bg-blue20>
           <Text>{this.props.key1}</Text>
@@ -137,6 +139,7 @@ const panelCommonStyles = {
 const frontCommonStyles = {
   height: "100%",
   width: "100%",
+  backfaceVisibility: "hidden",
 };
 const backCommonStyles = {
   position: "absolute",
@@ -152,6 +155,9 @@ const backCommonStyles = {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "transparent",
+  },
   mainItem: {
     ...panelCommonStyles,
   },

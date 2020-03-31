@@ -9,7 +9,7 @@ export default function transform(ref, dx, y) {
   transformUtil.applyPerspective(matrix, 1000);
   transformUtil.multiplyInto(matrix, matrix, rotate);
 
-  ref.setNativeProps({
+  ref.current.setNativeProps({
     style: {
       transform: [
         {

@@ -21,6 +21,15 @@ class Item extends Component {
       secondValue: new Animated.Value(0),
       heightValue: new Animated.Value(this.heightMain),
     };
+
+    this.createRefs();
+  }
+
+  createRefs() {
+    this.mainFrontRef = React.createRef();
+    this.mainBackRef = React.createRef();
+    this.secondFrontRef = React.createRef();
+    this.secondBackRef = React.createRef();
   }
 
   componentDidMount() {
@@ -103,29 +112,36 @@ class Item extends Component {
         <AnimatedView height={this.heightMain} style={styles.mainItem}>
           <AnimatedView
             padding-16
-            ref={el => (this.mainFrontRef = el)}
+            ref={this.mainFrontRef}
             style={styles.mainItemFront}>
             <Text part2>{this.props.key2}</Text>
           </AnimatedView>
-          <AnimatedView
-            ref={el => (this.mainBackRef = el)}
-            style={styles.mainItemBack}>
+          <AnimatedView ref={this.mainBackRef} style={styles.mainItemBack}>
             <Text part2 margin-16>
               {this.props.key3}
             </Text>
-            <AnimatedView height={this.heightSecond} style={styles.secondItem}>
+            {/* <AnimatedView height={this.heightSecond} style={styles.secondItem}>
               <AnimatedView
                 padding-16
-                ref={el => (this.secondFrontRef = el)}
+                ref={this.secondFrontRef}
                 style={styles.secondItemFront}
               />
               <AnimatedView
                 padding-16
-                ref={el => (this.secondBackRef = el)}
+                ref={this.secondBackRef}
                 style={styles.secondItemBack}>
                 <Text part3>{this.props.key4}</Text>
               </AnimatedView>
-            </AnimatedView>
+            </AnimatedView> */}
+            <ItemPanel
+              height={this.heightSecond}
+              panelStyles={styles.secondItem}
+              frontRef={this.secondFrontRef}
+              frontStyles={styles.secondItemFront}
+              backRef={this.secondBackRef}
+              backStyles={styles.secondItemBack}
+              keyBack={this.props.key4}
+            />
           </AnimatedView>
         </AnimatedView>
       </AnimatedCard>
@@ -133,49 +149,72 @@ class Item extends Component {
   }
 }
 
+class ItemPanel extends Component {
+  render() {
+    return (
+      <AnimatedView height={this.props.height} style={this.props.panelStyles}>
+        <AnimatedView
+          padding-16
+          ref={this.props.frontRef}
+          style={this.props.frontStyles}>
+          <Text {...this.props.frontTextProps}>{this.props.keyFront}</Text>
+        </AnimatedView>
+        <AnimatedView
+          padding-16
+          ref={this.props.backRef}
+          style={this.props.backStyles}>
+          <Text {...this.props.backTextProps}>{this.props.keyBack}</Text>
+          {this.props.nextPanel}
+        </AnimatedView>
+      </AnimatedView>
+    );
+  }
+}
+
+const panelCommonStyles = {
+  position: "absolute",
+  width: "100%",
+};
+const frontCommonStyles = {
+  height: "100%",
+  width: "100%",
+};
+const backCommonStyles = {
+  position: "absolute",
+  backfaceVisibility: "hidden",
+  height: "100%",
+  width: "100%",
+  top: "100%",
+  transform: [
+    {
+      rotateX: "180deg",
+    },
+  ],
+};
+
 const styles = StyleSheet.create({
   mainItem: {
-    position: "absolute",
-    width: "100%",
+    ...panelCommonStyles,
   },
   mainItemFront: {
-    height: "100%",
+    ...frontCommonStyles,
     backgroundColor: "green",
   },
   mainItemBack: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    backfaceVisibility: "hidden",
+    ...backCommonStyles,
     backgroundColor: "blue",
-    top: "100%",
-    transform: [
-      {
-        rotateX: "180deg",
-      },
-    ],
   },
   secondItem: {
-    position: "absolute",
-    width: "100%",
+    ...panelCommonStyles,
     bottom: 0,
   },
   secondItemFront: {
-    height: "100%",
+    ...frontCommonStyles,
     backgroundColor: "gray",
   },
   secondItemBack: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    backfaceVisibility: "hidden",
+    ...backCommonStyles,
     backgroundColor: "yellow",
-    top: "100%",
-    transform: [
-      {
-        rotateX: "270deg",
-      },
-    ],
   },
 });
 

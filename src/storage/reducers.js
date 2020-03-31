@@ -14,7 +14,7 @@ function fillState(amount) {
   }
 }
 
-fillState(6);
+fillState(15);
 
 function reducer(state = STATE, action) {
   return state;

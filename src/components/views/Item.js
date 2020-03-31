@@ -16,7 +16,7 @@ class Item extends Component {
 
     this.state = {
       mainValue: new Animated.Value(0),
-      heightValue: new Animated.Value(120),
+      heightValue: new Animated.Value(this._heightMain),
     };
 
     this.state.mainValue.addListener(this.doTransform.bind(this));
@@ -31,8 +31,16 @@ class Item extends Component {
   }
 
   doTransform() {
-    transform(this.mainFrontRef, this.frontValue.__getValue(), 60);
-    transform(this.mainBackRef, this.backValue.__getValue(), -60);
+    transform(
+      this.mainFrontRef,
+      this.frontValue.__getValue(),
+      this._heightMain / 2,
+    );
+    transform(
+      this.mainBackRef,
+      this.backValue.__getValue(),
+      -this._heightMain / 2,
+    );
   }
 
   animate() {
@@ -42,7 +50,7 @@ class Item extends Component {
       useNativeDriver: true,
     }).start();
     Animated.timing(this.state.heightValue, {
-      toValue: 240,
+      toValue: this._heightMain * 2,
       duration: 300,
       useNativeDriver: false,
     }).start();
@@ -53,7 +61,6 @@ class Item extends Component {
       <AnimatedCard
         onPress={this.animate}
         margin-8
-        borderRadius={0}
         enableBlur={false}
         style={{
           height: this.state.heightValue,
@@ -63,14 +70,14 @@ class Item extends Component {
         </Animated.View>
         <Animated.View height={this._heightMain} style={styles.secondItem}>
           <Animated.View
-            ref={el => (this.mainFrontRef = el)}
             padding-16
+            ref={el => (this.mainFrontRef = el)}
             style={styles.secondItemFront}>
             <Text part2>{this.props.key2}</Text>
           </Animated.View>
           <Animated.View
-            ref={el => (this.mainBackRef = el)}
             padding-16
+            ref={el => (this.mainBackRef = el)}
             style={styles.secondItemBack}>
             <Text part2>{this.props.key3}</Text>
           </Animated.View>

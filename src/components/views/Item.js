@@ -86,7 +86,7 @@ class Item extends PureComponent {
       Animated.timing(this.state.heightValue, {
         toValue: this.HEIGHT_MAIN,
         duration: this.DURATION * 2,
-        easing: Easing.in(Easing.cubic),
+        easing: Easing.in(Easing.circle),
         useNativeDriver: false,
       }),
     ]).start(callback);

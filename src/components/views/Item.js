@@ -23,23 +23,25 @@ class Item extends PureComponent {
   }
 
   animate() {
-    Animated.sequence([
-      Animated.timing(this.state.mainValue, {
-        toValue: 1,
+    Animated.parallel([
+      Animated.sequence([
+        Animated.timing(this.state.mainValue, {
+          toValue: 1,
+          duration: this.duration,
+          useNativeDriver: true,
+        }),
+        Animated.timing(this.state.secondValue, {
+          toValue: 1,
+          duration: this.duration,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.timing(this.state.heightValue, {
+        toValue: this.heightMain * 2 + this.heightSecond,
         duration: this.duration,
-        useNativeDriver: true,
-      }),
-      Animated.timing(this.state.secondValue, {
-        toValue: 1,
-        duration: this.duration,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
-    Animated.timing(this.state.heightValue, {
-      toValue: this.heightMain * 2 + this.heightSecond,
-      duration: this.duration,
-      useNativeDriver: false,
-    }).start();
   }
 
   render() {

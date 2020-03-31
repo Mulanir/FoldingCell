@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { StyleSheet, Animated } from "react-native";
 import { View, Text, Card } from "react-native-ui-lib";
 
@@ -21,60 +21,6 @@ class Item extends Component {
       secondValue: new Animated.Value(0),
       heightValue: new Animated.Value(this.heightMain),
     };
-
-    this.createRefs();
-  }
-
-  createRefs() {
-    this.mainFrontRef = React.createRef();
-    this.mainBackRef = React.createRef();
-    this.secondFrontRef = React.createRef();
-    this.secondBackRef = React.createRef();
-  }
-
-  componentDidMount() {
-    this.state.mainValue.addListener(
-      this.getValueListener(
-        { front: this.mainFrontRef, back: this.mainBackRef },
-        this.getInterpolatedValues(this.state.mainValue),
-        this.heightMain,
-      ).bind(this),
-    );
-    this.state.secondValue.addListener(
-      this.getValueListener(
-        { front: this.secondFrontRef, back: this.secondBackRef },
-        this.getInterpolatedValues(this.state.secondValue),
-        this.heightSecond,
-      ).bind(this),
-    );
-  }
-
-  getValueListener(refsObject, valuesObj, height) {
-    function listener() {
-      this.doTransform(refsObject, valuesObj, height);
-    }
-
-    return listener;
-  }
-
-  getInterpolatedValues(animatedValue) {
-    let front = animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 180],
-      extrapolate: 0,
-    });
-    let back = animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [180, 360],
-      extrapolate: 0,
-    });
-
-    return { front, back };
-  }
-
-  doTransform(refsObject, valuesObj, height) {
-    transform(refsObject.front, valuesObj.front.__getValue(), height / 2);
-    transform(refsObject.back, valuesObj.back.__getValue(), -height / 2);
   }
 
   animate() {
@@ -109,59 +55,79 @@ class Item extends Component {
         <AnimatedView height={this.heightMain} padding-16 bg-blue20>
           <Text part1>{this.props.key1}</Text>
         </AnimatedView>
-        <AnimatedView height={this.heightMain} style={styles.mainItem}>
-          <AnimatedView
-            padding-16
-            ref={this.mainFrontRef}
-            style={styles.mainItemFront}>
-            <Text part2>{this.props.key2}</Text>
-          </AnimatedView>
-          <AnimatedView ref={this.mainBackRef} style={styles.mainItemBack}>
-            <Text part2 margin-16>
-              {this.props.key3}
-            </Text>
-            {/* <AnimatedView height={this.heightSecond} style={styles.secondItem}>
-              <AnimatedView
-                padding-16
-                ref={this.secondFrontRef}
-                style={styles.secondItemFront}
-              />
-              <AnimatedView
-                padding-16
-                ref={this.secondBackRef}
-                style={styles.secondItemBack}>
-                <Text part3>{this.props.key4}</Text>
-              </AnimatedView>
-            </AnimatedView> */}
+        <ItemPanel
+          height={this.heightMain}
+          animValue={this.state.mainValue}
+          panelStyles={styles.mainItem}
+          frontStyles={styles.mainItemFront}
+          backStyles={styles.mainItemBack}
+          keyFront={this.props.key2}
+          keyBack={this.props.key3}
+          nextPanel={
             <ItemPanel
               height={this.heightSecond}
+              animValue={this.state.secondValue}
               panelStyles={styles.secondItem}
-              frontRef={this.secondFrontRef}
               frontStyles={styles.secondItemFront}
-              backRef={this.secondBackRef}
               backStyles={styles.secondItemBack}
               keyBack={this.props.key4}
             />
-          </AnimatedView>
-        </AnimatedView>
+          }
+        />
       </AnimatedCard>
     );
   }
 }
 
-class ItemPanel extends Component {
+class ItemPanel extends PureComponent {
+  constructor() {
+    super();
+
+    this.frontRef = React.createRef();
+    this.backRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.props.animValue.addListener(this.doTransform.bind(this));
+    this.initInterpolatedValues();
+  }
+
+  initInterpolatedValues() {
+    this.frontValue = this.props.animValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 180],
+      extrapolate: 0,
+    });
+    this.backValue = this.props.animValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [180, 360],
+      extrapolate: 0,
+    });
+  }
+
+  doTransform() {
+    transform(
+      this.frontRef,
+      this.frontValue.__getValue(),
+      this.props.height / 2,
+    );
+    transform(
+      this.backRef,
+      this.backValue.__getValue(),
+      -this.props.height / 2,
+    );
+  }
+
   render() {
     return (
       <AnimatedView height={this.props.height} style={this.props.panelStyles}>
         <AnimatedView
-          padding-16
-          ref={this.props.frontRef}
+          ref={this.frontRef}
           style={this.props.frontStyles}>
           <Text {...this.props.frontTextProps}>{this.props.keyFront}</Text>
         </AnimatedView>
         <AnimatedView
-          padding-16
-          ref={this.props.backRef}
+          ref={this.backRef}
           style={this.props.backStyles}>
           <Text {...this.props.backTextProps}>{this.props.keyBack}</Text>
           {this.props.nextPanel}

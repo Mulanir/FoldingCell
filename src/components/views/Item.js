@@ -103,8 +103,8 @@ class Item extends PureComponent {
         style={{
           height: this.state.heightValue,
         }}>
-        <AnimatedView height={this.HEIGHT_MAIN} padding-16 bg-blue20>
-          <Text part1>{this.props.key1}</Text>
+        <AnimatedView height={this.HEIGHT_MAIN} bg-blue20>
+          <Text>{this.props.key1}</Text>
         </AnimatedView>
         <Panel
           height={this.HEIGHT_MAIN}

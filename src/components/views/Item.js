@@ -103,84 +103,27 @@ class Item extends PureComponent {
         enableShadow={false}
         style={{
           height: this.state.heightValue,
-          ...styles.card,
+          backgroundColor: "transparent",
         }}>
         <AnimatedView height={this.HEIGHT_MAIN} bg-blue20>
           <Text>{this.props.key1}</Text>
+          <Panel
+            height={this.HEIGHT_MAIN}
+            animValue={this.state.mainValue}
+            keyFront={this.props.key2}
+            keyBack={this.props.key3}
+            nextPanel={
+              <Panel
+                height={this.HEIGHT_SECOND}
+                animValue={this.state.secondValue}
+                keyBack={this.props.key4}
+              />
+            }
+          />
         </AnimatedView>
-        <Panel
-          height={this.HEIGHT_MAIN}
-          animValue={this.state.mainValue}
-          panelStyles={styles.mainItem}
-          frontStyles={styles.mainItemFront}
-          backStyles={styles.mainItemBack}
-          keyFront={this.props.key2}
-          keyBack={this.props.key3}
-          nextPanel={
-            <Panel
-              height={this.HEIGHT_SECOND}
-              animValue={this.state.secondValue}
-              panelStyles={styles.secondItem}
-              frontStyles={styles.secondItemFront}
-              backStyles={styles.secondItemBack}
-              keyBack={this.props.key4}
-            />
-          }
-        />
       </AnimatedCard>
     );
   }
 }
-
-const panelCommonStyles = {
-  position: "absolute",
-  width: "100%",
-};
-const frontCommonStyles = {
-  height: "100%",
-  width: "100%",
-  backfaceVisibility: "hidden",
-};
-const backCommonStyles = {
-  position: "absolute",
-  backfaceVisibility: "hidden",
-  height: "100%",
-  width: "100%",
-  top: "100%",
-  transform: [
-    {
-      rotateX: "180deg",
-    },
-  ],
-};
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "transparent",
-  },
-  mainItem: {
-    ...panelCommonStyles,
-  },
-  mainItemFront: {
-    ...frontCommonStyles,
-    backgroundColor: "green",
-  },
-  mainItemBack: {
-    ...backCommonStyles,
-    backgroundColor: "blue",
-  },
-  secondItem: {
-    ...panelCommonStyles,
-    bottom: 0,
-  },
-  secondItemFront: {
-    ...frontCommonStyles,
-    backgroundColor: "gray",
-  },
-  secondItemBack: {
-    ...backCommonStyles,
-    backgroundColor: "yellow",
-  },
-});
 
 export default Item;

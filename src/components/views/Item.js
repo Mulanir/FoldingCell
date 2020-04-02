@@ -1,10 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-  Animated,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-} from "react-native";
+import { Animated, LayoutAnimation, Platform, UIManager } from "react-native";
 import { Text, Card } from "react-native-ui-lib";
 
 import Panel, { AnimatedView } from "src/components/views/Panel";
@@ -23,7 +18,8 @@ class Item extends PureComponent {
 
     this.HEIGHT_MAIN = 120;
     this.HEIGHT_SECOND = 60;
-    this.DURATION = 4000;
+    this.DURATION_OPEN = 300;
+    this.DURATION_CLOSE = 200;
 
     this.animate = this.animate.bind(this);
     this.animateForw = this.animateForw.bind(this);
@@ -43,7 +39,6 @@ class Item extends PureComponent {
       return;
     }
 
-    this.setState({ inProgress: true });
     this.state.nextAnimation();
   }
 
@@ -54,18 +49,19 @@ class Item extends PureComponent {
         nextAnimation: this.animateBack,
       });
     this.animateHeight(
+      this.DURATION_OPEN * 2,
       LayoutAnimation.Types.easeOut,
       this.HEIGHT_MAIN + this.HEIGHT_SECOND,
     );
     Animated.sequence([
       Animated.timing(this.state.mainValue, {
         toValue: 1,
-        duration: this.DURATION,
+        duration: this.DURATION_OPEN,
         useNativeDriver: true,
       }),
       Animated.timing(this.state.secondValue, {
         toValue: 1,
-        duration: this.DURATION,
+        duration: this.DURATION_OPEN,
         useNativeDriver: true,
       }),
     ]).start(callback);
@@ -77,33 +73,37 @@ class Item extends PureComponent {
         inProgress: false,
         nextAnimation: this.animateForw,
       });
-    this.animateHeight(LayoutAnimation.Types.easeIn, 0);
+    this.animateHeight(
+      this.DURATION_CLOSE * 2.5,
+      LayoutAnimation.Types.easeIn,
+      0,
+    );
     Animated.sequence([
       Animated.timing(this.state.secondValue, {
         toValue: 0,
-        duration: this.DURATION,
+        duration: this.DURATION_CLOSE,
         useNativeDriver: true,
       }),
       Animated.timing(this.state.mainValue, {
         toValue: 0,
-        duration: this.DURATION,
+        duration: this.DURATION_CLOSE,
         useNativeDriver: true,
       }),
     ]).start(callback);
   }
 
-  animateHeight(easing, height) {
+  animateHeight(duration, easing, height) {
     const animationConfig = {
-      duration: this.DURATION * 2,
+      duration: duration,
       update: {
         type: easing,
-        property: LayoutAnimation.Properties.height,
       },
     };
 
     LayoutAnimation.configureNext(animationConfig);
 
     this.setState({
+      inProgress: true,
       height,
     });
   }

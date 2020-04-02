@@ -10,9 +10,7 @@ function fillState(amount) {
     key4: "hello4",
   };
 
-  for (let i = 0; i < amount; i++) {
-    STATE.items.push(defaultItemData);
-  }
+  STATE.items = [...Array(amount)].map(() => defaultItemData)
 }
 
 fillState(15);

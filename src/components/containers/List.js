@@ -1,7 +1,6 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { FlatList } from "react-native";
-import { View, ScrollBar } from "react-native-ui-lib";
+import { ScrollView } from "react-native";
 
 import Item from "src/components/views/Item";
 
@@ -16,13 +15,11 @@ class List extends PureComponent {
     let items = this.getItems();
 
     return (
-      <FlatList
-        renderItem={({ item }) => <Item {...item} />}
-        data={items}
-        // bg-green10
-        // padding-8
-        keyExtractor={item => item.key}
-      />
+      <ScrollView>
+        {items.map(item => (
+          <Item {...item} />
+        ))}
+      </ScrollView>
     );
   }
 }

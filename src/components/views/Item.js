@@ -39,15 +39,20 @@ class Item extends PureComponent {
       return;
     }
 
-    this.state.nextAnimation();
+    if (this.props.tryAnimate()) {
+      this.state.nextAnimation();
+    }
   }
 
   animateForw() {
-    let callback = () =>
+    let callback = () => {
+      this.props.stopAnimate();
       this.setState({
         inProgress: false,
         nextAnimation: this.animateBack,
       });
+    };
+
     this.animateHeight(
       this.DURATION_OPEN * 2,
       LayoutAnimation.Types.easeOut,
@@ -68,11 +73,14 @@ class Item extends PureComponent {
   }
 
   animateBack() {
-    let callback = () =>
+    let callback = () => {
+      this.props.stopAnimate();
       this.setState({
         inProgress: false,
         nextAnimation: this.animateForw,
       });
+    };
+
     this.animateHeight(
       this.DURATION_CLOSE * 2.5,
       LayoutAnimation.Types.easeIn,

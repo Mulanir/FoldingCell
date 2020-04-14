@@ -18,8 +18,8 @@ class Item extends PureComponent {
 
     this.HEIGHT_MAIN = 120;
     this.HEIGHT_SECOND = 60;
-    this.DURATION_OPEN = 300;
-    this.DURATION_CLOSE = 200;
+    this.DURATION_OPEN = 600;
+    this.DURATION_CLOSE = 400;
 
     this.animate = this.animate.bind(this);
     this.animateForw = this.animateForw.bind(this);
@@ -31,6 +31,7 @@ class Item extends PureComponent {
       nextAnimation: this.animateForw,
       mainValue: new Animated.Value(0),
       secondValue: new Animated.Value(0),
+      thirdValue: new Animated.Value(0),
     };
   }
 
@@ -54,9 +55,9 @@ class Item extends PureComponent {
     };
 
     this.animateHeight(
-      this.DURATION_OPEN * 2,
+      this.DURATION_OPEN * 3,
       LayoutAnimation.Types.easeOut,
-      this.HEIGHT_MAIN + this.HEIGHT_SECOND,
+      this.HEIGHT_MAIN + this.HEIGHT_SECOND * 2,
     );
     Animated.sequence([
       Animated.timing(this.state.mainValue, {
@@ -65,6 +66,11 @@ class Item extends PureComponent {
         useNativeDriver: true,
       }),
       Animated.timing(this.state.secondValue, {
+        toValue: 1,
+        duration: this.DURATION_OPEN,
+        useNativeDriver: true,
+      }),
+      Animated.timing(this.state.thirdValue, {
         toValue: 1,
         duration: this.DURATION_OPEN,
         useNativeDriver: true,
@@ -82,11 +88,16 @@ class Item extends PureComponent {
     };
 
     this.animateHeight(
-      this.DURATION_CLOSE * 2.5,
+      this.DURATION_CLOSE * 3,
       LayoutAnimation.Types.easeIn,
       0,
     );
     Animated.sequence([
+      Animated.timing(this.state.thirdValue, {
+        toValue: 0,
+        duration: this.DURATION_CLOSE,
+        useNativeDriver: true,
+      }),
       Animated.timing(this.state.secondValue, {
         toValue: 0,
         duration: this.DURATION_CLOSE,
@@ -140,11 +151,18 @@ class Item extends PureComponent {
                 height={this.HEIGHT_SECOND}
                 animValue={this.state.secondValue}
                 keyBack={this.props.key4}
+                nextPanel={
+                  <Panel
+                    height={this.HEIGHT_SECOND}
+                    animValue={this.state.thirdValue}
+                    keyBack={this.props.key5}
+                  />
+                }
               />
             }
           />
         </AnimatedView>
-        <Spacer height={this.state.height}></Spacer>
+        <Spacer height={this.state.height} />
       </AnimatedCard>
     );
   }

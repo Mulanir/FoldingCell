@@ -13,17 +13,13 @@ if (Platform.OS === "android") {
 }
 
 class Item extends PureComponent {
-  constructor() {
-    super();
+  HEIGHT_MAIN = 120;
+  HEIGHT_SECOND = 60;
+  DURATION_OPEN = 600;
+  DURATION_CLOSE = 400;
 
-    this.HEIGHT_MAIN = 120;
-    this.HEIGHT_SECOND = 60;
-    this.DURATION_OPEN = 600;
-    this.DURATION_CLOSE = 400;
-
-    this.animate = this.animate.bind(this);
-    this.animateForw = this.animateForw.bind(this);
-    this.animateBack = this.animateBack.bind(this);
+  constructor(props) {
+    super(props);
 
     this.state = {
       height: 0,
@@ -35,7 +31,7 @@ class Item extends PureComponent {
     };
   }
 
-  animate() {
+  animate = () => {
     if (this.state.inProgress) {
       return;
     }
@@ -43,9 +39,9 @@ class Item extends PureComponent {
     if (this.props.tryAnimate()) {
       this.state.nextAnimation();
     }
-  }
+  };
 
-  animateForw() {
+  animateForw = () => {
     let callback = () => {
       this.props.stopAnimate();
       this.setState({
@@ -76,9 +72,9 @@ class Item extends PureComponent {
         useNativeDriver: true,
       }),
     ]).start(callback);
-  }
+  };
 
-  animateBack() {
+  animateBack = () => {
     let callback = () => {
       this.props.stopAnimate();
       this.setState({
@@ -109,7 +105,7 @@ class Item extends PureComponent {
         useNativeDriver: true,
       }),
     ]).start(callback);
-  }
+  };
 
   animateHeight(duration, easing, height) {
     const animationConfig = {

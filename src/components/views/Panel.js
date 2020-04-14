@@ -7,12 +7,8 @@ import transform from "src/utils/transforms";
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 class Panel extends PureComponent {
-  constructor() {
-    super();
-
-    this.frontRef = React.createRef();
-    this.backRef = React.createRef();
-  }
+  frontRef = React.createRef();
+  backRef = React.createRef();
 
   componentDidMount() {
     this.initInterpolatedValues();

@@ -5,28 +5,21 @@ import { ScrollView } from "react-native";
 import Item from "src/components/views/Item";
 
 class List extends PureComponent {
-  constructor(props) {
-    super(props);
+  state = {
+    inProgress: false,
+  };
 
-    this.state = {
-      inProgress: false,
-    };
-    this.tryAnimate = this.tryAnimate.bind(this);
-    this.stopAnimate = this.stopAnimate.bind(this);
-  }
-
-  tryAnimate() {
+  tryAnimate = () => {
     if (this.state.inProgress) {
       return false;
     } else {
       this.setState({ inProgress: true });
       return true;
     }
-  }
-
-  stopAnimate() {
+  };
+  stopAnimate = () => {
     this.setState({ inProgress: false });
-  }
+  };
 
   getItems() {
     return this.props.items.map((itemData, index) => {

@@ -15,8 +15,8 @@ if (Platform.OS === "android") {
 class Item extends PureComponent {
   HEIGHT_MAIN = 120;
   HEIGHT_SECOND = 60;
-  DURATION_OPEN = 600;
-  DURATION_CLOSE = 400;
+  DURATION_OPEN = 300;
+  DURATION_CLOSE = 200;
 
   constructor(props) {
     super(props);
